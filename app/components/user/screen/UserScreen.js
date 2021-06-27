@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 export default function UserScreen({ navigation }) {
     const account = useSelector(state => state.numberReducer);
     const [data, setData] = useState([]);
-    console.log(data);
     useEffect(() => {
         Customer(account?.idaccount, 'GET', null).then(res => {
             setData(res.data)

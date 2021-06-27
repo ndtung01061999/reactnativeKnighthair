@@ -28,7 +28,6 @@ export default function BookingItem({ item }) {
                 i++;
             }
         }
-        console.log(list);
         return list;
     }
     const [modal, setModal] = useState(false);
@@ -51,7 +50,7 @@ export default function BookingItem({ item }) {
                 <View style={styles.book}>
                     <View style={styles.date}>
                         <Text style={{ fontSize: 20, color: '#FC6011' }}>
-                        {item.listdetail[0].time}
+                        {item.listdetail[0].timebooking}
                     </Text>
                         <View style={{ width: '100%', height: 1, backgroundColor: '#ccc', marginVertical: '3%' }}></View>
                         <Text>
@@ -184,7 +183,7 @@ export default function BookingItem({ item }) {
 
 const styles = StyleSheet.create({
     book: {
-        marginBottom: '3%',
+        marginBottom: 10,
         width: '100%',
         height: 100,
         backgroundColor: '#fff',

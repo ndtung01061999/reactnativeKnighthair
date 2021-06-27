@@ -13,10 +13,11 @@ export default function ListBookingScreen() {
     const url = useSelector(state => state?.numberReducer?.idaccount)
     const [refresh, setRefresh] = useState(false);
     const [data, setData] = useState([]);
-    console.log(data)
     useEffect(() => {
-        callAPI(url, setData);
-    },)
+        Getbooking(url, 'GET', null).then(res => {
+            setData(res.data);
+        })
+    },[])
     return (
         <View style={styles.container}>
             <SafeAreaView style={{ backgroundColor: '#FC6011' }} />
@@ -50,7 +51,7 @@ export default function ListBookingScreen() {
 }
 const styles = StyleSheet.create({
     container: {
-
+        flex:1,
     },
     header: {
         height: 50,
@@ -59,17 +60,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     listbook: {
-        marginHorizontal: '3%',
+        marginHorizontal: 10,
         marginTop: 10,
     },
     book: {
-        marginBottom: '3%',
         width: '100%',
         height: 100,
         backgroundColor: '#fff',
         borderRadius: 10,
         flexDirection: 'row',
-        paddingHorizontal: '3%',
+        paddingHorizontal: 10,
     },
     date: {
         justifyContent: 'center',
