@@ -19,8 +19,7 @@ export default function Timeline({ item, itemActive, setItemActive, itemcheck })
                     }
                     else{
                         setItemActive(item);
-                    }
-                    
+                    }   
                 }
                 }
             >

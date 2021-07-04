@@ -192,10 +192,6 @@ export default function BookingScreen({ route }) {
                                                 itemcheck={null}
                                             />
                                         }}
-                                        // renderItem={({abc})=>{
-                                        //     return <Timeline
-                                        //     />
-                                        // }}
                                         keyExtractor={item => item?.id}
                                     />
                                 </View>

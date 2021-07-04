@@ -16,9 +16,6 @@ export default function LoginScreen({ navigation }) {
     }
     const [name, setName] = useState();
     const [password, setPassword] = useState();
-    useEffect(() => {
-
-    }, [])
     function check(name, password) {
         if (name == undefined || password == undefined) {
             alert("Tên hoặc mật khẩu chưa nhập")
