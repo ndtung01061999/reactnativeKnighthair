@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   View,
@@ -16,30 +15,31 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Blog from '../item/blog';
 import dbblog from '../../../api/blog';
 import Onestore from '../../../api/store/Onestore';
-function callAPI(setStoreHn,setStoreHCM) {
-    Onestore('store/city/1', 'GET', null).then(res => {
-      setStoreHn(res.data);
-
-    })
-    Onestore('store/city/79', 'GET', null).then(res => {
-      setStoreHCM(res.data);
-    })
+import {useSelector} from 'react-redux';
+function callAPI(setStoreHn, setStoreHCM) {
+  Onestore('store/city/1', 'GET', null).then(res => {
+    setStoreHn(res.data);
+  });
+  Onestore('store/city/79', 'GET', null).then(res => {
+    setStoreHCM(res.data);
+  });
 }
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({navigation}) {
   const [refresh, setRefresh] = useState(false);
   const [storehn, setStoreHn] = useState([]);
   const [storehcm, setStoreHCM] = useState([]);
+  const customer = useSelector(state => state.userReducer.users);
   useEffect(() => {
     Onestore('store/city/1', 'GET', null).then(res => {
       setStoreHn(res.data);
-    })
+    });
     Onestore('store/city/79', 'GET', null).then(res => {
       setStoreHCM(res.data);
-    })
-  }, [])
+    });
+  }, []);
   return (
     <View style={styles.container}>
-      <SafeAreaView style={{ backgroundColor: '#FC6011' }} />
+      <SafeAreaView style={{backgroundColor: '#FC6011'}} />
       <View style={styles.header}>
         <Text
           style={{
@@ -54,11 +54,16 @@ export default function HomeScreen({ navigation }) {
         <RefreshControl
           refreshing={refresh}
           onRefresh={() => {
-            callAPI(setStoreHn,setStoreHCM)
+            callAPI(setStoreHn, setStoreHCM);
           }}
         />
         <View style={styles.avatar}>
-          <Image style={styles.img} source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/image-99c86.appspot.com/o/em.png?alt=media&token=ebd82782-ea92-481f-a6ed-a219e361cc2d&fbclid=IwAR3zM59MJomO1EqybBpO5jyzx6C7iDhJ53iXz7E4oL6TzUJpMtw6He4cTBI' }} />
+          <Image
+            style={styles.img}
+            source={{
+              uri: customer.image,
+            }}
+          />
           <Text
             style={{
               fontSize: 15,
@@ -66,20 +71,22 @@ export default function HomeScreen({ navigation }) {
               fontWeight: 'bold',
               marginLeft: '2%',
             }}>
-            Nguyễn Duy Tùng
-            </Text>
+            {customer.name}
+          </Text>
         </View>
         <View style={styles.search}>
           <TouchableHighlight
             style={styles.button_search}
             activeOpacity={0.6}
             underlayColor="#fff"
-            onPress={() => navigation.navigate('ListStoreScreen', {
-              type: 1
-            })}>
+            onPress={() =>
+              navigation.navigate('ListStoreScreen', {
+                type: 1,
+              })
+            }>
             <View style={styles.detail_button_search}>
-              <View style={[styles.icon, { backgroundColor: '#FF9931' }]}>
-                <Icon name={'cut'} size={20} color={'#fff'}></Icon>
+              <View style={[styles.icon, {backgroundColor: '#FF9931'}]}>
+                <Icon name={'cut'} size={20} color={'#fff'} />
               </View>
               <Text>cắt tóc</Text>
             </View>
@@ -88,12 +95,14 @@ export default function HomeScreen({ navigation }) {
             style={styles.button_search}
             activeOpacity={0.6}
             underlayColor="#fff"
-            onPress={() => navigation.navigate('ListStoreScreen', {
-              type: 2
-            })}>
+            onPress={() =>
+              navigation.navigate('ListStoreScreen', {
+                type: 2,
+              })
+            }>
             <View style={styles.detail_button_search}>
-              <View style={[styles.icon, { backgroundColor: '#30FFF2' }]}>
-                <Icon name={'shower'} size={20} color={'#fff'}></Icon>
+              <View style={[styles.icon, {backgroundColor: '#30FFF2'}]}>
+                <Icon name={'shower'} size={20} color={'#fff'} />
               </View>
               <Text>gội đầu</Text>
             </View>
@@ -102,64 +111,64 @@ export default function HomeScreen({ navigation }) {
             style={styles.button_search}
             activeOpacity={0.6}
             underlayColor="#fff"
-            onPress={() => navigation.navigate('ListStoreScreen', {
-              type: 3
-            })}>
+            onPress={() =>
+              navigation.navigate('ListStoreScreen', {
+                type: 3,
+              })
+            }>
             <View style={styles.detail_button_search}>
-              <View style={[styles.icon, { backgroundColor: '#FF30BB' }]}>
+              <View style={[styles.icon, {backgroundColor: '#FF30BB'}]}>
                 <Ionicons
                   name={'color-palette-outline'}
                   size={20}
-                  color={'#fff'}></Ionicons>
+                  color={'#fff'}
+                />
               </View>
               <Text>nhuộm tóc</Text>
             </View>
           </TouchableHighlight>
         </View>
         <View style={styles.blog}>
-          <Text style={{ fontSize: 25, fontWeight: 'bold', marginBottom: 10 }}>
+          <Text style={{fontSize: 25, fontWeight: 'bold', marginBottom: 10}}>
             Blog
-            </Text>
-            <FlatList
-              horizontal={true}
-              data={dbblog}
-              renderItem={({ item }) => {
-                return (
-                  <Blog item={item} navigation={navigation} type={1} />
-                )
-              }}
-              keyExtractor={item => item.id}
-              contentContainerStyle={styles.list}></FlatList>
+          </Text>
+          <FlatList
+            horizontal={true}
+            data={dbblog}
+            renderItem={({item}) => {
+              return <Blog item={item} navigation={navigation} type={1} />;
+            }}
+            keyExtractor={item => item.id}
+            contentContainerStyle={styles.list}
+          />
         </View>
         <View style={styles.blog}>
-          <Text style={{ fontSize: 25, fontWeight: 'bold', marginBottom: 10 }}>
+          <Text style={{fontSize: 25, fontWeight: 'bold', marginBottom: 10}}>
             Cửa hàng địa điểm Hà Nội
-            </Text>
-            <FlatList
-              horizontal={true}
-              data={storehn}
-              renderItem={({ item }) => {
-                return (
-                  <Blog item={item} navigation={navigation} type={2} />
-                )
-              }}
-              keyExtractor={item => item.id}
-              contentContainerStyle={styles.list}></FlatList>
+          </Text>
+          <FlatList
+            horizontal={true}
+            data={storehn}
+            renderItem={({item}) => {
+              return <Blog item={item} navigation={navigation} type={2} />;
+            }}
+            keyExtractor={item => item.id}
+            contentContainerStyle={styles.list}
+          />
         </View>
         <View style={styles.blog}>
-          <Text style={{ fontSize: 25, fontWeight: 'bold', marginBottom: 10 }}>
+          <Text style={{fontSize: 25, fontWeight: 'bold', marginBottom: 10}}>
             Cửa hàng địa điểm TP.HCM
-            </Text>
-            <FlatList
-              horizontal={true}
-              data={storehcm}
-              renderItem={({ item }) => {
-                return (
-                  <Blog item={item} navigation={navigation} type={2} />
-                )
-              }}
-              keyExtractor={item => item.id}
-              contentContainerStyle={styles.list}></FlatList>
+          </Text>
+          <FlatList
+            horizontal={true}
+            data={storehcm}
+            renderItem={({item}) => {
+              return <Blog item={item} navigation={navigation} type={2} />;
+            }}
+            keyExtractor={item => item.id}
+            contentContainerStyle={styles.list}
+          />
         </View>
       </ScrollView>
     </View>

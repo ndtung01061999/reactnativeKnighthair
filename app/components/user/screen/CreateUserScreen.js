@@ -12,30 +12,21 @@ import RNPickerSelect from 'react-native-picker-select';
 import City from '../../../api/location/City';
 import District from '../../../api/location/District';
 import Customer from '../../../api/customer/Customer';
+import {useDispatch, useSelector} from 'react-redux';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 function CallAPIdistrict(id, setDistrict) {
   District(id, 'GET', null).then(res => {
     setDistrict(res.data);
   });
 }
-const updateUser = data => {
-  console.log(data);
-  // Customer(data.idaccount, 'PUT', data).then(res => {
-  //   if (res?.status == 200) {
-  //     alert('Thanh cong');
-  //     props.navigation.popToTop();
-  //   } else {
-  //     alert('That bai');
-  //   }
-  // });
-};
 export default function CreateUserScreen(props) {
   const [image, setImage] = useState();
   const [data, setData] = useState(props.route.params);
-  console.log(data);
+  const dispatch = useDispatch();
   const [city, setCity] = useState([]);
   const [district, setDistrict] = useState([]);
-
+  const isloading = useSelector(state => state.userReducer?.isLoading);
   useEffect(() => {
     City(null).then(res => {
       setCity(res.data);
@@ -46,6 +37,11 @@ export default function CreateUserScreen(props) {
   }
   return (
     <View style={styles.container}>
+      <Spinner
+        visible={isloading}
+        textContent={'Loading...'}
+        textStyle={styles.spinnerTextStyle}
+      />
       <SafeAreaView />
       <View style={{alignItems: 'center'}}>
         <Image
@@ -188,14 +184,19 @@ export default function CreateUserScreen(props) {
       <TouchableOpacity
         style={{justifyContent: 'center', alignItems: 'center'}}
         onPress={() => {
-          Customer(data.idaccount, 'PUT', data).then(res => {
-            if (res?.status == 200) {
-              alert('Thanh cong');
-              props.navigation.popToTop();
-            } else {
-              alert('That bai');
-            }
+          dispatch({
+            type: 'UPDATE_USER',
+            payload: data,
           });
+
+          // Customer(data.id, 'PUT', data).then(res => {
+          //   if (res?.status == 200) {
+          //     alert('Thanh cong');
+          //     props.navigation.popToTop();
+          //   } else {
+          //     alert('That bai');
+          //   }
+          // });
         }}>
         <View style={styles.button}>
           <Text style={{color: '#fff'}}>LƯU THÔNG TIN</Text>

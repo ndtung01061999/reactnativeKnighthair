@@ -5,6 +5,7 @@ import Customer from '../../../api/customer/Customer';
 import {useSelector} from 'react-redux';
 import ImagePicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
+import loginReducer from '../../../redux/reducers/loginReducer';
 export default function UserScreen({navigation}) {
   const choosePhoto = async () => {
     await ImagePicker.openPicker({
@@ -22,7 +23,7 @@ export default function UserScreen({navigation}) {
         const url = await storage()
           .ref(`${date}-${filename[filename.length - 1]}`)
           .getDownloadURL();
-        Customer(data.idaccount, 'PUT', {
+        Customer(`image/${data.idaccount}`, 'PUT', {
           image: url,
         }).then(res => {
           if (res?.status == 200) {
@@ -36,13 +37,13 @@ export default function UserScreen({navigation}) {
     });
   };
 
-  const account = useSelector(state => state.numberReducer);
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    Customer(account?.idaccount, 'GET', null).then(res => {
-      setData(res.data);
-    });
-  });
+  const account = useSelector(state => state.loginReducer);
+  const data = useSelector(state => state.userReducer.users);
+  // useEffect(() => {
+  //   Customer(2, 'GET', null).then(res => {
+  //     setData(res.data);
+  //   });
+  // },[]);
   if (data == null) {
     return null;
   }
