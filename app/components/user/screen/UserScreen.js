@@ -2,11 +2,12 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, SafeAreaView, StyleSheet, Image} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Customer from '../../../api/customer/Customer';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import ImagePicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
 import loginReducer from '../../../redux/reducers/loginReducer';
 export default function UserScreen({navigation}) {
+  const dispatch = useDispatch();
   const choosePhoto = async () => {
     await ImagePicker.openPicker({
       width: 300,
@@ -139,7 +140,9 @@ export default function UserScreen({navigation}) {
         <TouchableOpacity
           style={{alignItems: 'center'}}
           onPress={() => {
-            navigation.replace('Login');
+            dispatch({
+              type: 'HANDLE_LOGOUT',
+            });
           }}>
           <View style={styles.button}>
             <Text>ĐĂNG XUẤT</Text>

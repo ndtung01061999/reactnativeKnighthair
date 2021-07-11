@@ -13,6 +13,7 @@ function* postLoginAction(body) {
       yield navigationRef.navigate('Tabs');
     } else {
       yield put({type: 'LOGIN_FAILURE'});
+      alert('Sai tên hoặc mật khẩu');
     }
   } catch (err) {
     console.log('err  ------------->', err);
