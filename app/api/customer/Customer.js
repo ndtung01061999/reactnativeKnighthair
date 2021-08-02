@@ -28,7 +28,20 @@ function updateCustomer(body) {
     console.log(err);
   });
 }
+function updateImage(body) {
+  console.log(body);
+  return axios({
+    method: 'PUT',
+    url: `${Config.API_URL}/customer/image/${body.idaccount}`,
+    data: {
+      image: body.image,
+    },
+  }).catch(err => {
+    console.log(err);
+  });
+}
 export default {
   getCustomer,
   updateCustomer,
+  updateImage,
 };

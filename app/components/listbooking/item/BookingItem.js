@@ -11,9 +11,11 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/AntDesign';
 import Entypo from 'react-native-vector-icons/dist/Entypo';
-import Getbooking from '../../../api/booking/Getbooking';
 import Onestore from '../../../api/store/Onestore';
 import ServiceItem from './ServiceItem';
+import Spinner from 'react-native-loading-spinner-overlay';
+import navigationRef from '../../../navigations/navigationRef';
+import Getbooking from '../../../api/booking/Getbooking';
 
 const ButtonAlert = title =>
   Alert.alert('Thông báo', title, [
@@ -38,6 +40,7 @@ export default function BookingItem({item}) {
   const [modal, setModal] = useState(false);
   const [store, setStore] = useState();
   const urlstore = `store/${item.listdetail[0].idstore}`;
+  const [isload, setIsload] = useState(false);
   useEffect(() => {
     callAPI(urlstore, setStore);
   }, []);
@@ -46,6 +49,11 @@ export default function BookingItem({item}) {
   }
   return (
     <View>
+      <Spinner
+        visible={isload}
+        textContent={'Loading...'}
+        textStyle={styles.spinnerTextStyle}
+      />
       <TouchableOpacity
         onPress={() => {
           setModal(true);
@@ -88,13 +96,17 @@ export default function BookingItem({item}) {
                     ? '#FF9100'
                     : item.status == 2
                     ? 'red'
-                    : '#2FFF00',
+                    : item.status == 3
+                    ? 'green'
+                    : 'blue',
               }}>
               {item.status == 1
                 ? 'Chờ xác nhận'
                 : item.status == 2
                 ? 'Huỷ'
-                : 'Đã xác nhận'}
+                : item.status == 3
+                ? 'Đã xác nhận'
+                : 'Hoàn thành'}
             </Text>
           </View>
         </View>
@@ -125,7 +137,9 @@ export default function BookingItem({item}) {
                   marginBottom: '3%',
                 }}>
                 <Icon size={30} name="clockcircleo" />
-                <Text style={{fontSize: 18, marginLeft: '3%'}}>15:30</Text>
+                <Text style={{fontSize: 18, marginLeft: '3%'}}>
+                  {item.listdetail[0].timebooking}
+                </Text>
               </View>
               <View
                 style={{
@@ -152,9 +166,22 @@ export default function BookingItem({item}) {
                   style={{
                     fontSize: 18,
                     marginLeft: '3%',
-                    color: item.status == 1 ? '#FF9100' : 'red',
+                    color:
+                      item.status == 1
+                        ? '#FF9100'
+                        : item.status == 2
+                        ? 'red'
+                        : item.status == 3
+                        ? 'green'
+                        : 'blue',
                   }}>
-                  {item.status == 1 ? 'Chờ xử lý' : 'Huỷ'}
+                  {item.status == 1
+                    ? 'Chờ xác nhận'
+                    : item.status == 2
+                    ? 'Huỷ'
+                    : item.status == 3
+                    ? 'Đã xác nhận'
+                    : 'Hoàn thành'}
                 </Text>
               </View>
             </View>
@@ -211,19 +238,27 @@ export default function BookingItem({item}) {
                 marginTop: '3%',
               }}
               onPress={() => {
-                item.status = 2;
-                Getbooking(`${item.id}`, 'PUT', item).then(res => {
-                  if (res.status == 200) {
-                    alert('thanh cong');
-                    setModal(false);
-                  } else {
-                    alert('khong thanh cong');
-                    setModal(false);
-                  }
-                });
+                if (item.status == 4) {
+                  navigationRef.navigate('Comment', {item: item});
+                  setModal(false);
+                } else {
+                  item.status = 2;
+                  Getbooking(`${item.id}`, 'PUT', item).then(res => {
+                    console.log(res);
+                    if (res?.status == 200) {
+                      alert('thanh cong');
+                      setModal(false);
+                    } else {
+                      alert('khong thanh cong');
+                      setModal(false);
+                    }
+                  });
+                }
               }}>
               <View style={styles.button}>
-                <Text>HUY DAT CHO</Text>
+                <Text style={{color: '#fff'}}>
+                  {item.status == 4 ? 'ĐÁNH GIÁ' : 'HUỶ ĐẶT CHỖ'}{' '}
+                </Text>
               </View>
             </TouchableOpacity>
           </View>

@@ -5,7 +5,7 @@ import navigationRef from '../../navigations/navigationRef';
 function* postLogoutAction(body) {
   try {
     yield put({type: 'LOGOUT_SUCCESS'});
-    yield navigationRef.navigate('Login');
+    yield navigationRef.replace('Login');
   } catch (err) {
     console.log('err  ------------->', err);
     yield put({type: 'LOGIN_FAILURE', err});

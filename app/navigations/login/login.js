@@ -9,7 +9,6 @@ import {
   SafeAreaView,
   ActivityIndicator,
 } from 'react-native';
-import Getuser from '../../api/user/User';
 import {useDispatch, useSelector} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 export default function LoginScreen({navigation}) {
@@ -25,7 +24,6 @@ export default function LoginScreen({navigation}) {
   const [name, setName] = useState();
   const [password, setPassword] = useState();
   const check = async (name, password) => {
-    // setIsload(true);
     if (name == undefined || password == undefined) {
       setIsload(false);
       alert('Tên hoặc mật khẩu chưa nhập');

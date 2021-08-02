@@ -11,7 +11,6 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import RNPickerSelect from 'react-native-picker-select';
 import City from '../../../api/location/City';
 import District from '../../../api/location/District';
-import Customer from '../../../api/customer/Customer';
 import {useDispatch, useSelector} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 

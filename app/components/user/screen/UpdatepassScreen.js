@@ -7,24 +7,23 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-import Getuser from '../../../api/user/User';
+import Changepass from '../../../api/user/Changepass';
 import {useDispatch} from 'react-redux';
 function check(account, passwordNew, dispatch, navigation) {
   if (passwordNew.new1 == passwordNew.try) {
-    const trypass = {
+    Changepass(account.id, {
       password: passwordNew.new1,
-    };
-    Getuser(account.idaccount, 'PUT', trypass).then(res => {
+    }).then(res => {
       if (res?.status == 200) {
         alert('Thanh cong');
         navigation.popToTop();
+        dispatch({
+          type: 'LOGIN',
+          idaccount: account.idaccount,
+          name: account.name,
+          password: passwordNew.new1,
+        });
       }
-    });
-    dispatch({
-      type: 'LOGIN',
-      idaccount: account.idaccount,
-      name: account.name,
-      password: passwordNew.new1,
     });
   } else {
     alert('Nhập lại mật khẩu sai');
@@ -33,7 +32,7 @@ function check(account, passwordNew, dispatch, navigation) {
 
 export default function UpdatepassScreen(props) {
   const dispatch = useDispatch();
-  const [account, setAccount] = useState(props.route.params.account);
+  const account = props.route.params.account;
   const [passwordNew, setPasswordNew] = useState({
     old: '',
     new1: '',

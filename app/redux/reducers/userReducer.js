@@ -1,5 +1,6 @@
 const initData = {
   users: {},
+  isLoading: false,
 };
 
 const userReducer = (state = initData, {type, payload}) => {
@@ -14,20 +15,27 @@ const userReducer = (state = initData, {type, payload}) => {
       return {
         ...state,
         users: payload,
-        isLoading: false,
+        isLoading: true,
       };
     case 'UPDATE_USERSUSSCED':
-
       return {
         ...state,
         users: payload,
         isLoading: false,
         status: 200,
       };
+    case 'UPDATE_IMAGESUSSCED':
+      return {
+        users: {
+          ...state,
+          image: payload,
+        },
+        isLoading: false,
+        status: 200,
+      };
     case 'UPDATE_USERFAIL':
       return {
         ...state,
-        users: payload,
         isLoading: false,
         status: 400,
       };

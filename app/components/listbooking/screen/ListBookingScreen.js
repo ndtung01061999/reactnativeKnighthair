@@ -32,7 +32,7 @@ export default function ListBookingScreen() {
         <Text style={{color: '#fff', fontSize: 18}}>Lịch sử đặt chỗ</Text>
       </View>
       <View style={styles.listbook}>
-        {data == '' ? (
+        {data == '' && isload == true ? (
           <View style={{marginTop: 200, alignItems: 'center'}}>
             <Text style={{fontSize: 20}}>Không có lịch đặt</Text>
           </View>

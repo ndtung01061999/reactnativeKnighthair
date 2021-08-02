@@ -4,13 +4,12 @@ import Customer from '../../api/customer/Customer';
 import navigationRef from '../../navigations/navigationRef';
 function* postLoginAction(body) {
   try {
-    console.log(body);
     let response = yield call(User.login, body);
     if (response.data.id != 0) {
       let res = yield call(Customer.getCustomer, response.data.id);
       yield put({type: 'USER', payload: res.data});
       yield put({type: 'LOGIN_SUCCESS', payload: response.data});
-      yield navigationRef.navigate('Tabs');
+      yield navigationRef.replace('Tabs');
     } else {
       yield put({type: 'LOGIN_FAILURE'});
       alert('Sai tên hoặc mật khẩu');

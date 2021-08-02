@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, SafeAreaView, StyleSheet, Image} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import Customer from '../../../api/customer/Customer';
+import {Customer} from '../../../api/customer/Customer';
 import {useDispatch, useSelector} from 'react-redux';
 import ImagePicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
-import loginReducer from '../../../redux/reducers/loginReducer';
+import Spinner from 'react-native-loading-spinner-overlay';
 export default function UserScreen({navigation}) {
   const dispatch = useDispatch();
   const choosePhoto = async () => {
@@ -24,22 +24,23 @@ export default function UserScreen({navigation}) {
         const url = await storage()
           .ref(`${date}-${filename[filename.length - 1]}`)
           .getDownloadURL();
-        Customer(`image/${data.idaccount}`, 'PUT', {
-          image: url,
-        }).then(res => {
-          if (res?.status == 200) {
-            alert('Thanh cong');
-          } else {
-            alert('That bai');
-          }
+        dispatch({
+          type: 'UPDATE_IMAGE',
+          payload: {
+            idaccount: data?.idaccount,
+            users: {
+              ...data,
+              image: url,
+            },
+          },
         });
-        console.log(url);
       }
     });
   };
 
   const account = useSelector(state => state.loginReducer);
   const data = useSelector(state => state.userReducer.users);
+  const isloading = useSelector(state => state.imageReducer?.isLoading);
   // useEffect(() => {
   //   Customer(2, 'GET', null).then(res => {
   //     setData(res.data);
@@ -51,6 +52,11 @@ export default function UserScreen({navigation}) {
   return (
     <View>
       <SafeAreaView style={{backgroundColor: '#FC6011'}} />
+      <Spinner
+        visible={isloading}
+        textContent={'Loading...'}
+        textStyle={styles.spinnerTextStyle}
+      />
       <View style={styles.header} />
       <View style={styles.avatars}>
         <Image

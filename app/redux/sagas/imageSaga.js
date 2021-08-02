@@ -1,12 +1,16 @@
-import {call, put, select} from 'redux-saga/effects';
+import {call, put} from 'redux-saga/effects';
 import Customer from '../../api/customer/Customer';
 import navigationRef from '../../navigations/navigationRef';
-function* postUserAction(body) {
+function* postImageAction(body) {
   try {
-    let response = yield call(Customer.updateCustomer, body.payload);
+    console.log(body);
+    let response = yield call(Customer.updateImage, body.payload);
     if (response?.status == 200) {
-      yield put({type: 'UPDATE_USERSUSSCED', payload: body.payload});
-      yield navigationRef.popToTop();
+      yield put({
+        type: 'UPDATE_USERSUSSCED',
+        payload: body.payload.users,
+      });
+      yield put({type: 'UPDATE_IMAGESU'});
       alert('Thanh cong');
     } else {
       yield put({type: 'UPDATE_USERFAIL'});
@@ -18,5 +22,5 @@ function* postUserAction(body) {
 }
 
 export default function* (action) {
-  yield call(postUserAction, action);
+  yield call(postImageAction, action);
 }

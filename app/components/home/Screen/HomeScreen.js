@@ -61,7 +61,7 @@ export default function HomeScreen({navigation}) {
           <Image
             style={styles.img}
             source={{
-              uri: customer.image,
+              uri: customer?.image,
             }}
           />
           <Text
