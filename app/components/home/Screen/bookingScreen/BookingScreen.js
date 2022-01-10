@@ -81,11 +81,11 @@ export default function BookingScreen({route}) {
   const id = useSelector(state => state.loginReducer.id);
   const [date, setDate] = useState(
     `${new Date().getFullYear()}-${
-      new Date().getMonth() + 1 > 10
+      new Date().getMonth() + 1 > 9
         ? new Date().getMonth() + 1
         : `0${new Date().getMonth() + 1}`
     }-${
-      new Date().getDate() > 10
+      new Date().getDate() > 9
         ? new Date().getDate()
         : `0${new Date().getDate()}`
     }`,
@@ -98,6 +98,7 @@ export default function BookingScreen({route}) {
   useEffect(() => {
     Timelineservice(`${url}/1/${date}`, 'GET', null).then(res => {
       setTimelineone(res.data);
+      console.log(res);
     });
     Timelineservice(`${url}/2/${date}`, 'GET', null).then(res => {
       setTimelinetwo(res.data);
